@@ -18,6 +18,10 @@ public class Server
     private static object clientsLock = new object(); // KHông biết cái này để làm gì :D
     static Dictionary<string, string> sessions = new Dictionary<string, string>(); // Lưu trữ phiên làm việc của người dùng
     static Random rand = new Random(); // Tạo số ngẫu nhiên, dùng trong tạo session ID
+    // Theo dõi WebSocket clients đang hoạt động dùng IP:Port
+    static HashSet<string> ActiveClients = new HashSet<string>();
+    static object ClientLock = new object();
+
 
     // Hàm Main
     public static void Main()
@@ -42,7 +46,7 @@ public class Server
             TcpListener listener = new TcpListener(address, PORT_NUMBER);   //9999
 
             listener.Start();                                               // Bắt đầu lắng nghe kết nối
-            File.AppendAllText(logFilePath, $"[{DateTime.Now}] - Server started on {address}:{PORT_NUMBER} successfully!!!\n==========================================================\n"); // Log khởi động thành công
+            File.AppendAllText(logFilePath, $"\n[{DateTime.Now}] - Server started on {address}:{PORT_NUMBER} successfully!!!\n==========================================================\n"); // Log khởi động thành công
             Console.WriteLine("Server started on " + listener.LocalEndpoint);
             Console.WriteLine("Connect to http://" + address + ":" + PORT_NUMBER);
             Console.WriteLine("\nReady to receive connections...");
@@ -50,17 +54,46 @@ public class Server
             // Đợi kết nối từ client, sử dụng Thread để xử lý nhiều kết nối đồng thời, mỗi kết nối được xử lí riêng.
             while (true)
             {
-                Socket socket = listener.AcceptSocket();                        // Chấp nhận kết nối từ client
-                Thread clientThread = new Thread(() => HandleClient(socket));   // Tạo Thread mới để xử lý client
-                clientThread.Start();                                           // Bắt đầu Thread
-                File.AppendAllText(logFilePath, $"[{DateTime.Now}] - Client connected: {socket.RemoteEndPoint}\n"); // Log kết nối client
-                Console.WriteLine($"\nNew connection from {socket.RemoteEndPoint}");
+                try
+                {
+                    Socket socket = listener.AcceptSocket();
+
+                    // Peek request to detect WebSocket
+                    byte[] peekBuffer = new byte[BUFFER_SIZE];
+                    int bytesRead = socket.Receive(peekBuffer, 0, peekBuffer.Length, SocketFlags.Peek);
+                    string peekRequest = encoding.GetString(peekBuffer, 0, bytesRead);
+
+                    bool isWebSocket = peekRequest.Contains("Upgrade: websocket", StringComparison.OrdinalIgnoreCase);
+
+                    if (isWebSocket)
+                    {
+                        string clientKey = socket.RemoteEndPoint != null ? socket.RemoteEndPoint!.ToString()! : "UnknownClient";
+
+                        lock (ClientLock)
+                        {
+                            if (!ActiveClients.Contains(clientKey))
+                            {
+                                ActiveClients.Add(clientKey);
+                                File.AppendAllText(logFilePath, $"[{DateTime.Now}] - [WebSocket] Client connected: {clientKey}\n");
+                                Console.WriteLine($"\n[WebSocket] Client connected: {clientKey}");
+                            }
+                        }
+                    }
+
+                    Thread clientThread = new Thread(() => HandleClient(socket));
+                    clientThread.Start();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error in Thread: " + ex);
+                    break;
+                }
             }
         }
         catch (Exception ex)
         {
             IPAddress address = IPAddress.Parse(IP_ADDRESS);
-            File.AppendAllText(logFilePath, $"[{DateTime.Now}] - Server started on {address}:{PORT_NUMBER} failed with Error:\n {ex.Message}\nn--------------------------------------------------------n");
+            File.AppendAllText(logFilePath, $"\n[{DateTime.Now}] - Server started on {address}:{PORT_NUMBER} failed with Error:\n {ex.Message}\n--------------------------------------------------------");
             Console.WriteLine("Error: " + ex);
         }
     }
@@ -340,28 +373,55 @@ public class Server
             }
 
             // Xử lí yêu cầu GET room log
-            else if (requestLine[0] == "GET" && requestLine[1].StartsWith("/roomlog"))
+            else if (requestLine[0] == "GET" && requestLine[1].StartsWith("/roomhistory"))
             {
                 string[] split = requestLine[1].Split('?');
                 string roomName = "default";
 
                 if (split.Length > 1)
                 {
-                    var query = System.Web.HttpUtility.ParseQueryString(new Uri("http:" + IP_ADDRESS + ":9999" + requestLine[1]).Query);
+                    var query = System.Web.HttpUtility.ParseQueryString(
+                        new Uri("http://" + IP_ADDRESS + ":9999" + requestLine[1]).Query
+                    );
                     roomName = query["room"] ?? "default";
                 }
-                Console.WriteLine($"Fetching log for room: {roomName}");
+
                 string logPath = $"data/rooms/room_{roomName}.txt";
                 if (File.Exists(logPath))
                 {
-                    string log = File.ReadAllText(logPath);
-                    string roomLogResponse = $"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n{log}";
-                    socket.Send(encoding.GetBytes(roomLogResponse));
+                    var allLines = File.ReadAllLines(logPath)
+                                    .Where(line => line.StartsWith("[MSG]"))
+                                    .Select(line =>
+                                    {
+                                        // Split into parts
+                                        var parts = line.Split(new string[] { " - " }, StringSplitOptions.None);
+                                        if (parts.Length > 3)
+                                        {
+                                            // Parse time into HH:mm format
+                                            if (DateTime.TryParse(parts[2], out DateTime dt))
+                                            {
+                                                string shortTime = dt.ToString("HH:mm");
+                                                return $"[{shortTime}] {parts[3]}";
+                                            }
+                                            else
+                                            {
+                                                return parts[3]; // fallback if time parse fails
+                                            }
+                                        }
+                                        return line;
+                                    })
+                                    .ToList();
+
+                    var lastMessages = allLines.TakeLast(10).ToList();
+                    string json = System.Text.Json.JsonSerializer.Serialize(lastMessages);
+
+                    string historyResponse = $"HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n{json}";
+                    socket.Send(encoding.GetBytes(historyResponse));
                 }
                 else
                 {
-                    string roomLogResponse = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\nRoom log not found";
-                    socket.Send(encoding.GetBytes(roomLogResponse));
+                    string notFoundResponse = "HTTP/1.1 404 Not Found\r\nContent-Type: text/plain\r\n\r\nRoom log not found";
+                    socket.Send(encoding.GetBytes(notFoundResponse));
                 }
 
                 socket.Close();
@@ -491,7 +551,7 @@ public class Server
             if (!chatRooms.ContainsKey(roomName)) chatRooms[roomName] = new Room { Name = roomName };
             chatRooms[roomName].Clients.Add(socket);
         }
-        Console.WriteLine("Handling WebSocket handshake for room: " + roomName);
+        // Console.WriteLine("Handling WebSocket handshake for room: " + roomName);
         string logPath = $"data/rooms/room_{roomName}.txt";
         Directory.CreateDirectory("data/rooms");
         File.AppendAllText(logPath, $"[JOIN] {DateTime.Now} - {socket.RemoteEndPoint} joined {roomName}\n");
@@ -504,7 +564,7 @@ public class Server
     // Nhận dữ liệu từ client, giải mã, xử lý và gửi lại dữ liệu cho tất cả các client trong phòng chat
     private static void HandleWebSocketCommunication(Socket socket, string roomName)
     {
-        Console.WriteLine("Handling WebSocket communication for room: " + roomName);
+        // Console.WriteLine("Handling WebSocket communication for room: " + roomName);
         byte[] buffer = new byte[BUFFER_SIZE];
         string ipAddress = socket.RemoteEndPoint is IPEndPoint remoteEndPoint && remoteEndPoint != null
             ? remoteEndPoint.Address.ToString()
@@ -551,8 +611,8 @@ public class Server
                     Console.WriteLine("BOI THEY LEFT!?");
                     break;
                 }
-
-                string formatted = $"<span style='color:{color}'><b>{nickname}:</b></span> {System.Net.WebUtility.HtmlEncode(text)}";
+                string shortTime = DateTime.Now.ToString("HH:mm");
+                string formatted = $"[{shortTime}] <span style='color:{color}'><b>{nickname}:</b></span> {System.Net.WebUtility.HtmlEncode(text)}";
                 string fullMessage = $"[{ipAddress}] {formatted}";
                 Console.WriteLine("Received: " + fullMessage);
 

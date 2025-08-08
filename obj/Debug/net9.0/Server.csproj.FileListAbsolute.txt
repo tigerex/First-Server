@@ -12,3 +12,4 @@ C:\Minh\workplace\KTPM\W05_RealTimeChatServer_WebSocket\Server\obj\Debug\net9.0\
 C:\Minh\workplace\KTPM\W05_RealTimeChatServer_WebSocket\Server\obj\Debug\net9.0\Server.pdb
 C:\Minh\workplace\KTPM\W05_RealTimeChatServer_WebSocket\Server\obj\Debug\net9.0\Server.genruntimeconfig.cache
 C:\Minh\workplace\KTPM\W05_RealTimeChatServer_WebSocket\Server\obj\Debug\net9.0\ref\Server.dll
+C:\Minh\workplace\KTPM\W05_RealTimeChatServer_WebSocket\Server\obj\Debug\net9.0\Server.sourcelink.json

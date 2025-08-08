@@ -13,35 +13,31 @@
   <div id="chat" class="chat-box"></div>
 
   <div class="input-area">
-    <textarea type="text" id="message" placeholder="Enter message...">></textarea>
+    <textarea id="message" placeholder="Enter message..."></textarea>
     <button onclick="sendMessage()">Send</button>
   </div>
 
   <footer class="chat-footer">
     <a href="/join">Back to JoinChat</a>
-    <!-- <a href="/">Back to Home</a> -->
   </footer>
 
   <script>
-    const IP_ADDRESS = "192.168.2.25"; // Change to your server's IP
-    const PORT_NUMBER = 9999; // Change to your port
+    const IP_ADDRESS = "192.168.2.25"; // Change if needed
+    const PORT_NUMBER = 9999; 
     const chatDiv = document.getElementById("chat");
     const messageInput = document.getElementById("message");
-    // Detect Enter key in the input box
+
+    // Auto-grow textarea
     messageInput.addEventListener("input", function () {
-      this.style.height = "auto"; // reset so it shrinks when text is deleted
-      this.style.height = this.scrollHeight + "px"; // grow to fit content
+      this.style.height = "auto";
+      this.style.height = this.scrollHeight + "px";
     });
 
     // Enter to send, Ctrl+Enter for newline
     messageInput.addEventListener("keydown", function (event) {
-      if (event.key === "Enter") {
-        if (event.ctrlKey) {
-          // Let it insert a newline
-        } else {
-          event.preventDefault();
-          sendMessage();
-        }
+      if (event.key === "Enter" && !event.ctrlKey) {
+        event.preventDefault();
+        sendMessage();
       }
     });
 
@@ -50,19 +46,20 @@
     const room = localStorage.getItem("room") || "default";
     document.getElementById("room-title").textContent = `${room}`;
 
-    const socket = new WebSocket(`ws://${IP_ADDRESS}:${PORT_NUMBER}?room=${encodeURIComponent(room)}`);
-
-    socket.onopen = () => addMessage(`Connected to ${room}.`);
-    socket.onmessage = (event) => addMessage(event.data);
-    socket.onclose = () => addMessage(`Disconnected from server.`);
-
-    function sendMessage() {
-      if (!messageInput.value.trim()) return;
-      const payload = JSON.stringify({ nickname, color, msg: messageInput.value });
-      socket.send(payload);
-      messageInput.value = "";
+    // Load last 10 messages from server
+    async function loadHistory(room) {
+      try {
+        const res = await fetch(`/roomhistory?room=${encodeURIComponent(room)}`);
+        if (res.ok) {
+          const messages = await res.json();
+          messages.forEach(msg => addMessage(msg)); 
+        }
+      } catch (e) {
+        console.error("Failed to load history", e);
+      }
     }
 
+    // Append a message to chat window
     function addMessage(msg) {
       const p = document.createElement("p");
       p.innerHTML = msg;
@@ -70,10 +67,32 @@
       chatDiv.scrollTop = chatDiv.scrollHeight;
     }
 
+    // Send message via WebSocket
+    function sendMessage() {
+      if (!messageInput.value.trim()) return;
+
+      const payload = JSON.stringify({ nickname, color, msg: messageInput.value });
+      socket.send(payload);
+      messageInput.value = "";
+    }
+
     function logout() {
       localStorage.clear();
       window.location.href = "/logout";
     }
+
+    // Load history first
+    loadHistory(room).then(() => {
+      //  Then connect WebSocket
+      const socket = new WebSocket(`ws://${IP_ADDRESS}:${PORT_NUMBER}?room=${encodeURIComponent(room)}`);
+
+      socket.onopen = () => addMessage(`Connected to ${room}.`);
+      socket.onmessage = (event) => addMessage(event.data);
+      socket.onclose = () => addMessage(`Disconnected from server.`);
+
+      // Keep socket accessible for sendMessage
+      window.socket = socket;
+    });
   </script>
 </body>
 </html>
