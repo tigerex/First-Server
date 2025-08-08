@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login</h1>
+        <form method="post" action="/login">
+            <label>
+                Username<input type="text" name="username" required>
+            </label>
+            <label>
+                Password<input type="password" name="password" required>
+            </label>
+            <input type="submit" value="Login" class="btn">
+        </form>
+
+        <!-- Guest login button -->
+        <a href="/guest" class="btn btn-guest" style="display:block; text-align:center; margin-top:15px;">Login as Guest</a>
+        <a href="/" class="back-link">Back to Home</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+[
+  { "username": "nntu", "password": "56789", "role": "normie" },
+  { "username": "admin", "password": "admin", "role": "admin"},
+  { "username": "minh", "password": "minh", "role": "admin" },
+  { "username": "wind", "password": "wind","role": "normie" }
+]

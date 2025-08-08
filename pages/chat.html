@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WebSocket Chat</title>
+  <link rel="stylesheet" href="/chat.css">
+</head>
+<body class="chat-page">
+  <header class="chat-header">
+    <h2 id="room-title"></h2>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </header>
+
+  <div id="chat" class="chat-box"></div>
+
+  <div class="input-area">
+    <textarea type="text" id="message" placeholder="Enter message...">></textarea>
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <footer class="chat-footer">
+    <a href="/join">Back to JoinChat</a>
+    <!-- <a href="/">Back to Home</a> -->
+  </footer>
+
+  <script>
+    const IP_ADDRESS = "192.168.2.25"; // Change to your server's IP
+    const PORT_NUMBER = 9999; // Change to your port
+    const chatDiv = document.getElementById("chat");
+    const messageInput = document.getElementById("message");
+    // Detect Enter key in the input box
+    messageInput.addEventListener("input", function () {
+      this.style.height = "auto"; // reset so it shrinks when text is deleted
+      this.style.height = this.scrollHeight + "px"; // grow to fit content
+    });
+
+    // Enter to send, Ctrl+Enter for newline
+    messageInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        if (event.ctrlKey) {
+          // Let it insert a newline
+        } else {
+          event.preventDefault();
+          sendMessage();
+        }
+      }
+    });
+
+    const nickname = localStorage.getItem("nickname") || "Guest";
+    const color = localStorage.getItem("color") || "#000000";
+    const room = localStorage.getItem("room") || "default";
+    document.getElementById("room-title").textContent = `${room}`;
+
+    const socket = new WebSocket(`ws://${IP_ADDRESS}:${PORT_NUMBER}?room=${encodeURIComponent(room)}`);
+
+    socket.onopen = () => addMessage(`Connected to ${room}.`);
+    socket.onmessage = (event) => addMessage(event.data);
+    socket.onclose = () => addMessage(`Disconnected from server.`);
+
+    function sendMessage() {
+      if (!messageInput.value.trim()) return;
+      const payload = JSON.stringify({ nickname, color, msg: messageInput.value });
+      socket.send(payload);
+      messageInput.value = "";
+    }
+
+    function addMessage(msg) {
+      const p = document.createElement("p");
+      p.innerHTML = msg;
+      chatDiv.appendChild(p);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "/logout";
+    }
+  </script>
+</body>
+</html>

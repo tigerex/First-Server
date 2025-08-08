@@ -1,0 +1,32 @@
+Room: TEST
+Created at: 8/9/2025 5:02:27 AM
+Created by: Guest6013
+
+----- Chat Log -----
+[JOIN] 8/9/2025 5:02:30 AM - 192.168.2.25:58105 joined TEST
+[MSG] - Guest6013 - 8/9/2025 5:02:35 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> &gt;aetaetae
+[MSG] - Guest6013 - 8/9/2025 5:02:35 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> aef
+[MSG] - Guest6013 - 8/9/2025 5:02:35 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> aef
+[MSG] - Guest6013 - 8/9/2025 5:02:36 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> ae
+[MSG] - Guest6013 - 8/9/2025 5:02:36 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> fae
+[MSG] - Guest6013 - 8/9/2025 5:02:36 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> f
+[MSG] - Guest6013 - 8/9/2025 5:02:36 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> ae
+[MSG] - Guest6013 - 8/9/2025 5:02:36 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> rg
+[MSG] - Guest6013 - 8/9/2025 5:02:36 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> th
+[MSG] - Guest6013 - 8/9/2025 5:02:37 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> y
+[MSG] - Guest6013 - 8/9/2025 5:02:37 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> j
+[MSG] - Guest6013 - 8/9/2025 5:02:37 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> 5e432
+[MSG] - Guest6013 - 8/9/2025 5:02:37 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> 34
+[MSG] - Guest6013 - 8/9/2025 5:02:37 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> 5678
+[MSG] - Guest6013 - 8/9/2025 5:02:38 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> 87
+[MSG] - Guest6013 - 8/9/2025 5:02:38 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> 65r
+[MSG] - Guest6013 - 8/9/2025 5:02:38 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> dc
+[MSG] - Guest6013 - 8/9/2025 5:02:38 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> v
+[MSG] - Guest6013 - 8/9/2025 5:02:38 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> h
+[MSG] - Guest6013 - 8/9/2025 5:02:38 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> gf
+[MSG] - Guest6013 - 8/9/2025 5:02:40 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> d
+[MSG] - [Anonymous] - 8/9/2025 5:02:42 AM - <span style='color:#000'><b>[Anonymous]:</b></span> �
+[LEAVE] 8/9/2025 5:02:42 AM - 192.168.2.25:58105 left TEST
+[JOIN] 8/9/2025 5:04:05 AM - 192.168.2.25:58162 joined TEST
+[MSG] - Guest6013 - 8/9/2025 5:04:13 AM - <span style='color:#2196f3'><b>Guest6013:</b></span> &gt;&#234;fefefef
+[LEAVE] 8/9/2025 5:04:14 AM - 192.168.2.25:58162 left TEST

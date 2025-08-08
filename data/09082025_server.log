@@ -1,0 +1,82 @@
+[8/9/2025 1:38:44 AM] - Server started on 192.168.0.25:9999 failed with Error:
+ The requested address is not valid in its context.
+[8/9/2025 1:39:08 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 1:43:03 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 3:00:59 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 3:12:19 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 3:23:40 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 3:30:42 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 3:33:46 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 3:33:57 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 4:34:48 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 4:34:52 AM] - Client connected: 192.168.2.25:57334
+[8/9/2025 4:34:52 AM] - Client connected: 192.168.2.25:57335
+[8/9/2025 4:35:14 AM] - Client connected: 192.168.2.25:57346
+[8/9/2025 4:35:14 AM] - Client connected: 192.168.2.25:57347
+[8/9/2025 4:35:20 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 4:35:24 AM] - Client connected: 192.168.2.25:57350
+[8/9/2025 4:35:24 AM] - Client connected: 192.168.2.25:57351
+[8/9/2025 4:35:28 AM] - Client connected: 192.168.2.25:57358
+[8/9/2025 4:35:28 AM] - Client connected: 192.168.2.25:57359
+[8/9/2025 4:35:33 AM] - Client connected: 192.168.2.25:57362
+[8/9/2025 4:35:33 AM] - Client connected: 192.168.2.25:57363
+[8/9/2025 4:35:38 AM] - Client connected: 192.168.2.25:57365
+[8/9/2025 4:35:38 AM] - Client connected: 192.168.2.25:57366
+[8/9/2025 4:35:39 AM] - Client connected: 192.168.2.25:57368
+[8/9/2025 4:35:39 AM] - Client connected: 192.168.2.25:57370
+[8/9/2025 4:35:49 AM] - Client connected: 192.168.2.25:57374
+[8/9/2025 4:35:51 AM] - Client connected: 192.168.2.25:57375
+[8/9/2025 4:37:02 AM] - Client connected: 192.168.2.25:57394
+[8/9/2025 4:39:13 AM] - Server started on 192.168.2.25:9999 successfully!!!
+[8/9/2025 4:39:15 AM] - Client connected: 192.168.2.25:57483
+[8/9/2025 4:39:15 AM] - Client connected: 192.168.2.25:57484
+[8/9/2025 4:39:15 AM] - Client connected: 192.168.2.25:57487
+[8/9/2025 4:39:23 AM] - Client connected: 192.168.2.25:57494
+[8/9/2025 4:39:23 AM] - Client connected: 192.168.2.25:57495
+[8/9/2025 4:39:23 AM] - Client connected: 192.168.2.25:57499
+[8/9/2025 4:40:42 AM] - Client connected: 192.168.2.25:57508
+[8/9/2025 4:40:42 AM] - Client connected: 192.168.2.25:57509
+[8/9/2025 4:40:42 AM] - Client connected: 192.168.2.25:57512
+[8/9/2025 4:53:50 AM] - Server started on 192.168.2.25:9999 successfully!!!
+==========================================================
+[8/9/2025 4:53:55 AM] - Client connected: 192.168.2.25:57745
+[8/9/2025 4:53:55 AM] - Client connected: 192.168.2.25:57746
+[8/9/2025 4:53:56 AM] - Client connected: 192.168.2.25:57753
+[8/9/2025 4:53:56 AM] - Client connected: 192.168.2.25:57754
+[8/9/2025 4:55:17 AM] - Client connected: 192.168.2.25:57774
+[8/9/2025 4:55:17 AM] - Client connected: 192.168.2.25:57775
+[8/9/2025 4:55:25 AM] - Client connected: 192.168.2.25:57777
+[8/9/2025 4:55:25 AM] - Client connected: 192.168.2.25:57778
+[8/9/2025 4:55:25 AM] - Client connected: 192.168.2.25:57779
+[8/9/2025 4:55:25 AM] - Client connected: 192.168.2.25:57781
+[8/9/2025 5:01:23 AM] - Server started on 192.168.2.25:9999 successfully!!!
+==========================================================
+[8/9/2025 5:02:15 AM] - Server started on 192.168.2.25:9999 successfully!!!
+==========================================================
+[8/9/2025 5:02:19 AM] - Client connected: 192.168.2.25:58070
+[8/9/2025 5:02:19 AM] - Client connected: 192.168.2.25:58071
+[8/9/2025 5:02:20 AM] - Client connected: 192.168.2.25:58080
+[8/9/2025 5:02:21 AM] - Client connected: 192.168.2.25:58081
+[8/9/2025 5:02:22 AM] - Client connected: 192.168.2.25:58086
+[8/9/2025 5:02:22 AM] - Client connected: 192.168.2.25:58087
+[8/9/2025 5:02:22 AM] - Client connected: 192.168.2.25:58088
+[8/9/2025 5:02:22 AM] - Client connected: 192.168.2.25:58090
+[8/9/2025 5:02:22 AM] - Client connected: 192.168.2.25:58091
+[8/9/2025 5:02:27 AM] - Client connected: 192.168.2.25:58099
+[8/9/2025 5:02:29 AM] - Client connected: 192.168.2.25:58100
+[8/9/2025 5:02:30 AM] - Client connected: 192.168.2.25:58101
+[8/9/2025 5:02:30 AM] - Client connected: 192.168.2.25:58102
+[8/9/2025 5:02:30 AM] - Client connected: 192.168.2.25:58105
+[8/9/2025 5:02:42 AM] - Client connected: 192.168.2.25:58119
+[8/9/2025 5:02:42 AM] - Client connected: 192.168.2.25:58122
+[8/9/2025 5:02:42 AM] - Client connected: 192.168.2.25:58126
+[8/9/2025 5:02:42 AM] - Client connected: 192.168.2.25:58127
+[8/9/2025 5:04:01 AM] - Server started on 192.168.2.25:9999 successfully!!!
+==========================================================
+[8/9/2025 5:04:05 AM] - Client connected: 192.168.2.25:58159
+[8/9/2025 5:04:05 AM] - Client connected: 192.168.2.25:58160
+[8/9/2025 5:04:05 AM] - Client connected: 192.168.2.25:58162
+[8/9/2025 5:04:14 AM] - Client connected: 192.168.2.25:58175
+[8/9/2025 5:04:14 AM] - Client connected: 192.168.2.25:58178
+[8/9/2025 5:04:14 AM] - Client connected: 192.168.2.25:58183
+[8/9/2025 5:04:14 AM] - Client connected: 192.168.2.25:58184

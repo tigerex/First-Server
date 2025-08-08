@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Join Chat Room</title>
+    <link rel="stylesheet" href="/joinChat.css">
+</head>
+<body>
+    <header>
+        <h1>Join a Chat Room</h1>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+    </header>
+
+    <main>
+        <section class="user-form">
+            <label>Nickname:
+                <input type="text" id="nickname" placeholder="Enter your nickname" required style="color:grey;">
+            </label>
+            <label>Pick a Color:
+                <input type="color" id="color-picker" value="#2196F3">
+            </label>
+        </section>
+
+        <h2>Available Rooms</h2>
+        <div id="roomsContainer" class="room-cards">
+            <p>Loading rooms...</p>
+        </div>
+
+        <h2>Create New Room</h2>
+        <form id="createRoomForm" class="create-room-form">
+            <input type="text" id="newRoomName" placeholder="Enter room name" required>
+            <button type="submit">Create Room</button>
+        </form>
+    </main>
+
+    <script>
+        // Load existing rooms as cards
+        async function loadRooms() {
+            try {
+                const res = await fetch("/rooms");
+                const rooms = await res.json();
+                const container = document.getElementById("roomsContainer");
+                container.innerHTML = "";
+
+                if (rooms.length === 0) {
+                    container.innerHTML = "<p>No rooms available</p>";
+                } else {
+                    for (const room of rooms) {
+                        const card = document.createElement("div");
+                        card.className = "room-card";
+                        card.textContent = room;
+                        card.onclick = () => joinRoom(room);
+                        container.appendChild(card);
+                    }
+                }
+            } catch (e) {
+                alert("Failed to load rooms.");
+            }
+        }
+
+        async function loadUsername() {
+            try {
+                const res = await fetch("/whoami");
+                if (res.ok) {
+                    const data = await res.json();
+                    const nicknameInput = document.getElementById("nickname");
+                    nicknameInput.value = data.username || "Guest";
+                    nicknameInput.style.color = "grey";
+
+                    // Enable edit on click
+                    nicknameInput.addEventListener("focus", () => {
+                        nicknameInput.style.color = "black";
+                    });
+                }
+            } catch (e) {
+                console.error("Failed to fetch username");
+            }
+        }
+
+        function joinRoom(room) {
+            let nickname = document.getElementById("nickname").value.trim();
+            const color = document.getElementById("color-picker").value;
+            if (!nickname) {
+                nickname = "Guest";
+            }
+
+            localStorage.setItem("nickname", nickname);
+            localStorage.setItem("color", color);
+            localStorage.setItem("room", room);
+
+            window.location.href = "/chat";
+        }
+
+        // Create room
+        document.getElementById("createRoomForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const roomname = document.getElementById("newRoomName").value;
+
+            const response = await fetch("/createroom", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `roomname=${encodeURIComponent(roomname)}`
+            });
+
+            if (response.status === 201) {
+                alert("Room created successfully!");
+                loadRooms();
+            } else if (response.status === 409) {
+                alert("Room already exists.");
+            } else {
+                alert("Failed to create room.");
+            }
+        });
+
+        // Logout button
+        document.getElementById("logoutBtn").onclick = async () => {
+            await fetch("/logout", { method: "POST" });
+            localStorage.clear();
+            window.location.href = "/";
+        };
+        loadUsername();
+        loadRooms();
+    </script>
+</body>
+</html>
